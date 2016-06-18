@@ -11,7 +11,7 @@ filetype off
 call neobundle#begin(expand('~/.vim/bundle/'))
 
 NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/vimproc.vim', {'build': {'unix': 'make', 'linux': 'make'}}
+" NeoBundle 'Shougo/vimproc.vim', {'build': {'unix': 'make', 'linux': 'make'}}
 
 " Aesthetics
 NeoBundle 'nanotech/jellybeans.vim'

@@ -15,7 +15,7 @@ function build-prompt() {
     git=$(git-prompt)
     pair=$(git-user-initials)
 
-    echo "%{$fg[cyan]%}%2c $git $pair$statcolor▸%{$reset_color%} "
+    echo "%{$fg[cyan]%}%1c $git $pair$statcolor▸%{$reset_color%} "
 }
 
 function build-right-prompt() {
@@ -27,7 +27,7 @@ function build-right-prompt() {
 }
 PS1='`build-prompt`'
 
-RPS1='`build-right-prompt`'
+RPS1=''
 
 [ $TERM = "eterm-color" ] && setopt singlelinezle
 [ $TERM = "dumb" ] && unsetopt zle && PS1='$ ' && RPS1=''

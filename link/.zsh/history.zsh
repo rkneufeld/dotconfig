@@ -12,13 +12,19 @@ setopt AUTO_PUSHD
 setopt INTERACTIVE_COMMENTS
 
 # Allow multiple terminal sessions to all append to one zsh command history
-setopt APPEND_HISTORY 
+setopt APPEND_HISTORY
 
 # Add comamnds as they are typed, don't wait until shell exit
-setopt INC_APPEND_HISTORY 
+setopt INC_APPEND_HISTORY
 
 # Do not write events to history that are duplicates of previous events
 setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_EXPIRE_DUPS_FIRST
+
+# If you start a cmd with a space, don't keep it in the history
+setopt HIST_IGNORE_SPACE
 
 # When searching history don't display results already cycled through twice
 setopt HIST_FIND_NO_DUPS

@@ -22,7 +22,6 @@ Plug 'tpope/vim-surround' " Manage delimiters (ys)
 Plug 'tpope/vim-projectionist' " Move to related files easily using :E*
 
 " Language Support
-Plug 'dotcloud/docker', { 'for': 'docker', 'rtp': 'contrib/syntax/vim' } " Dockerfile support
 Plug 'jceb/vim-orgmode', {'for': 'org'} " .org support
 Plug 'tpope/vim-markdown', {'for': 'markdown'} " .md support
 Plug 'udalov/kotlin-vim' " Kotlin lang
@@ -82,11 +81,13 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " Async completion
 " Plug 'clojure-vim/async-clj-omni' " TODO: Diagnose freezing of UI input
 " Plug 'roxma/nvim-completion-manager' " TODO: Reevaluate against deoplete + async-clj-omni support
 
+Plug 'dracula/vim', { 'as': 'dracula' }
+
 call plug#end()
 
 " Editor Style  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-colorscheme jellybeans
+colorscheme dracula
 set background=dark
 
 set laststatus=2  " always show the status bar
@@ -439,3 +440,9 @@ nnoremap <Leader>Gb :Gblame<CR>
 
 nmap [c <Plug>GitGutterPrevHunk
 nmap ]c <Plug>GitGutterNextHunk
+
+nmap <leader>l :set list!<CR>
+nmap <leader>w :set wrap!<CR>
+command! -nargs=* Wrap set wrap linebreak nolist
+
+nnoremap <Leader>m m

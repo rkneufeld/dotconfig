@@ -4,7 +4,7 @@
 " - UltiSnips // other snippet plugin
 " - vim-dispatch
 "
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin('~/.local/share/site/autoload/plug.vim')
 
 " Editor Style
 Plug 'nanotech/jellybeans.vim' " Preferred theme
@@ -87,7 +87,7 @@ call plug#end()
 
 " Editor Style  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-colorscheme dracula
+colorscheme jellybeans
 set background=dark
 
 set laststatus=2  " always show the status bar
@@ -446,3 +446,6 @@ nmap <leader>w :set wrap!<CR>
 command! -nargs=* Wrap set wrap linebreak nolist
 
 nnoremap <Leader>m m
+
+nnoremap <Leader>cc :Connect nrepl://localhost:7888/<cr><cr>
+nnoremap <Leader>cr :CljEval (do (require 'figwheel-sidecar.repl-api) (cider.piggieback/cljs-repl (figwheel-sidecar.repl-api/repl-env)))<cr>

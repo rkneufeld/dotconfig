@@ -22,9 +22,7 @@ Plug 'tpope/vim-surround' " Manage delimiters (ys)
 Plug 'tpope/vim-projectionist' " Move to related files easily using :E*
 
 " Language Support
-Plug 'jceb/vim-orgmode', {'for': 'org'} " .org support
 Plug 'tpope/vim-markdown', {'for': 'markdown'} " .md support
-Plug 'udalov/kotlin-vim' " Kotlin lang
 
 "" Lisps
 Plug 'guns/vim-sexp', { 'for': 'clojure' } " S-expression text-objects and manipulations
@@ -32,54 +30,26 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' } " Better
 Plug 'luochen1990/rainbow', { 'for': 'clojure' } " Rainbow parentheses
 
 " Clojure plugins
-Plug 'guns/vim-clojure-static', { 'for': 'clojure' } " Clojure runtime files
-Plug 'tpope/vim-salve', { 'for': 'clojure' } " Static lein/boot support (:Connect, :E*)
-Plug 'tpope/vim-fireplace', {'for': 'clojure'} " Clojure/ClojureScript REPL support
-" Plug 'guns/vim-clojure-highlight'
-Plug 'snoe/clj-refactor.nvim', { 'for': 'clojure', 'do': ':UpdateRemotePlugins'} " Clojure Refactoring support
-
-"" Elixir
-Plug 'c-brenn/phoenix.vim', {'for': 'elixir'} "Phoenix support (jump/gf, :E* projections, server)
-Plug 'elixir-editors/vim-elixir', {'for': 'elixir'} " Elixir language support
-Plug 'slashmili/alchemist.vim', {'for': 'elixir'} " Completion, doc and mix support
-""" TODO: Trial elixir.nvim + related plugins
-" Plug 'awetzel/elixir.nvim', { 'do': 'yes \| ./install.sh' }
-" Plug 'thinca/vim-ref' 
+Plug 'liquidz/vim-iced', {'for': 'clojure'}
 
 
 " Utilities
 Plug 'gcmt/taboo.vim' " Vim :tabe manager
-Plug 'janko-m/vim-test' " :Test runners hooked into multiple languages
 Plug 'tpope/vim-eunuch' " Unix utilities
-Plug 'tpope/vim-dispatch'  " Async compiler execution (used by vim-salve)
-Plug 'radenling/vim-dispatch-neovim' " vim-dispatch support for Neovim
 Plug 'svermeulen/vim-easyclip' 
 
 "" Navigation Utilities
 Plug 'scrooloose/nerdtree', {'on': ['NERDTree','NERDTreeToggle']} " Tree-based directory viewer
 
 "" Git Utilities
-Plug 'tpope/vim-fugitive' " Git wrapper (:G* family)
-Plug 'tommcdo/vim-fugitive-blame-ext' " Git blame ext to show commit msg
 Plug 'airblade/vim-gitgutter' " Git status in gutter
-Plug 'junegunn/gv.vim' " Git commit viewer (GV[!?])
-
-" Vim Plugin Editing
-Plug 'tpope/vim-scriptease' " Various plugin development utilities
 
 " Neovim Plugins
-Plug 'benekastah/neomake', { 'on': ['Neomake'] } " Used for async make. Drop?
 Plug 'w0rp/ale' " Async linting engine. Use w/ joker 
-Plug 'kassio/neoterm', {'on': ['T']} " :term helpers (e.g. T, Tmap, TREPLSend*)
 
 " Search & Completions
-" Plug 'cloudhead/neovim-fuzzy'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " Async completions
-" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer'} " TRIAL: Code completion engine
-" Plug 'clojure-vim/async-clj-omni' " TODO: Diagnose freezing of UI input
-" Plug 'roxma/nvim-completion-manager' " TODO: Reevaluate against deoplete + async-clj-omni support
 
 Plug 'dracula/vim', { 'as': 'dracula' }
 
@@ -161,76 +131,10 @@ endif
 " See also after/ftplugin/clojure.vim
 
 let g:rainbow_active = 1
-let g:clojure_special_indent_words = 'deftype,defrecord,reify,proxy,extend-type,extend-protocol,letfn,defcomponent,deftask,set-env!,task-options!,s/fdef'
-let g:clojure_maxlines = 1000
-let g:clojure_fold = 1
-setlocal lispwords+=go-loop,try-n-times,fdef
-
-let g:clojure_fuzzy_indent = 1
-let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let', '^s/fdef']
-let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
-setlocal lispwords+=go-loop,try-n-times,fdef
-
-command! BootCljs :Piggieback (adzerk.boot-cljs-repl/repl-env)
-
-function! s:ReplDoc(symbol)
-  exec "Eval (clojure.repl/doc " a:symbol ")"
-endfunction
 
 augroup cljautopairs
   autocmd!
   au FileType clojure let b:AutoPairs = {'(':')','{':'}',"'":"'",'"':'"', '[':']'}
-augroup END
-
-" Elixir """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap <silent> <leader>t :TestNearest<CR>
-nmap <silent> <leader>T :TestFile<CR>
-nmap <silent> <leader>a :TestSuite<CR>
-nmap <silent> <leader>l :TestLast<CR>
-nmap <silent> <leader>g :TestVisit<CR>
-
-augroup elixir
-  autocmd!
-  autocmd FileType elixir
-    \ let b:endwise_addition = 'end' |
-    \ let b:endwise_words = ''
-      \ . 'def,'
-      \ . 'defmodule,'
-      \ . 'case,'
-      \ . 'cond,'
-      \ . 'bc,'
-      \ . 'lc,'
-      \ . 'inlist,'
-      \ . 'inbits,'
-      \ . 'if,'
-      \ . 'unless,'
-      \ . 'try,'
-      \ . 'receive,'
-      \ . 'function,'
-      \ . 'fn'
-      \ |
-    \ let b:endwise_pattern = ''
-      \ . '^\s*\zs\%('
-        \ . 'def\|'
-        \ . 'defmodule\|'
-        \ . 'case\|'
-        \ . 'cond\|'
-        \ . 'bc\|'
-        \ . 'lc\|'
-        \ . 'inlist\|'
-        \ . 'inbits\|'
-        \ . 'if\|'
-        \ . 'unless\|'
-        \ . 'try\|'
-        \ . 'receive\|'
-        \ . 'function\|'
-        \ . 'fn'
-      \ . '\)\>\%(.*[^:]\<end\>\)\@!'
-      \ |
-    \ let b:endwise_syngroups = ''
-      \ . 'elixirDefine,'
-      \ . 'elixirModuleDefine,'
-      \ . 'elixirKeyword'
 augroup END
 
 " Status Line """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -262,27 +166,11 @@ augroup lastposnjump
         \| exe "normal! g`\"" | endif
 augroup END
 
-" tnoremap <Esc> <C-\><C-n>
-let g:neoterm_autoscroll = 1
-
-" Neovim Plugins """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-augroup neomake
-  autocmd!
-  autocmd BufWritePost,BufEnter *.scss Neomake
-augroup END
-
-" See also ftdetect/kotlin_neoterm.vim
-
-" Search & Completion """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:deoplete#enable_at_startup = 1
-
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
 " Keybindings """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" TODO: Document & clean
 
 let mapleader = " "
 let maplocalleader = " "
@@ -333,12 +221,6 @@ map <leader>mv :call RenameFile()<cr>
 command! KillWhitespace :normal :%s/ *$//g<cr><c-o><cr>
 map <leader>ws :call KillWhitespace
 
-"" Profiling Support
-nnoremap <silent> <leader>DD :exe ":profile start profile.log"<cr>:exe ":profile func *"<cr>:exe ":profile file *"<cr>
-nnoremap <silent> <leader>DP :exe ":profile pause"<cr>
-nnoremap <silent> <leader>DC :exe ":profile continue"<cr>
-nnoremap <silent> <leader>DQ :exe ":profile pause"<cr>:noautocmd qall!<cr>
-
 "" Search Assistance
 
 if executable('rg')
@@ -387,59 +269,19 @@ imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
-nnoremap <silent> <Leader>fp :FZF<CR>
 nnoremap <silent> <Leader>p :FZF<CR>
-nnoremap <silent> <Leader>fg :Ag<CR>
-nnoremap <silent> <Leader>fm :FzfMarks<CR>
-nnoremap <silent> <Leader>fh :FzfHelp<CR>
-nnoremap <silent> <Leader>fp :FZF<CR>
-nnoremap <silent> <Leader>fp :FZF<CR>
-
-" nnoremap <silent> <Leader>p        :FuzzyOpen<CR>
-" nnoremap <silent> <Leader>g        :FuzzyGrep<CR>
-
+nnoremap <silent> <Leader>a :Ag<CR>
 
 nnoremap <silent> <leader>c :ccl<CR>
-
-" Terminal bindings
-"
-nnoremap <silent> <Leader>ts        :TREPLSendSelection<CR>
-nnoremap <silent> <Leader>tf        :TREPLSendFile<CR>
-
-let g:neoterm_default_mod = 'rightbelow'
-let g:neoterm_automap_keys = ',tt'
-
-nnoremap <silent> <f10> :TREPLSendFile<cr>
-nnoremap <silent> <f9> :TREPLSendLine<cr>
-vnoremap <silent> <f9> :TREPLSendSelection<cr>
-
-"" neoterm
-
-" hide/close terminal
-nnoremap <silent> <Leader>th :call neoterm#close()<cr>
-" clear terminal
-nnoremap <silent> <Leader>tl :call neoterm#clear()<cr>
-" kills the current job (send a <c-c>)
-nnoremap <silent> <Leader>tc :call neoterm#kill()<cr>
 
 "" Git
 " See also after/ftplugin/git{commit,rebase}.vim
 
 let g:gitgutter_map_keys = 0
 
-command! -nargs=+ Tg :T git <args>
-nnoremap <Leader>Gv :GV
-nnoremap <Leader>Gs :Gstatus<CR>
-nnoremap <Leader>Gc :Gcommit<CR>
-nnoremap <Leader>Gp :Gpush<CR>
-nnoremap <Leader>Gf :Gpull<CR>
-nnoremap <Leader>GW :Gwrite<CR>:Gcommit<CR>
-nnoremap <Leader>Gd :Gdiff<CR>
-nnoremap <Leader>GD :Gvdiff<CR>
-nnoremap <Leader>Gb :Gblame<CR>
-
 nmap [c <Plug>GitGutterPrevHunk
 nmap ]c <Plug>GitGutterNextHunk
+
 
 nmap <leader>l :set list!<CR>
 nmap <leader>w :set wrap!<CR>
@@ -447,5 +289,8 @@ command! -nargs=* Wrap set wrap linebreak nolist
 
 nnoremap <Leader>m m
 
-nnoremap <Leader>cc :Connect nrepl://localhost:7888/<cr><cr>
-nnoremap <Leader>cr :CljEval (do (require 'figwheel-sidecar.repl-api) (cider.piggieback/cljs-repl (figwheel-sidecar.repl-api/repl-env)))<cr>
+set hidden
+let g:iced_enable_default_key_mappings = v:true
+nmap <buffer> cp <Plug>(iced_eval)
+
+
